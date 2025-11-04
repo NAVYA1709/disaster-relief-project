@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relief Resource Prioritization Strategy</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+  <!-- Background Video -->
+  <video autoplay muted loop id="bg-video">
+    <source src="assets/videos/priorityVideo1.mp4" type="video/mp4">
+  </video>
+
+  <!-- Header -->
+  <header>
+    <h1>Relief Resource Prioritization Strategy</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="algorithm.html">Algorithm</a>
+      <a href="simulation.html">Simulation</a>
+      <a href="priority.html" class="active">Priority</a>
+      <a href="workflow.html">Workflow</a>
+      <a href="results.html">Results</a>
+      <a href="conclusion.html">Conclusion</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <section>
+    <h2>Concept Overview</h2>
+    <p>
+      To determine the order of delivering resources to affected areas, a
+      <b>Priority Queue</b> is used. It ranks disaster zones based on
+      <b>urgency</b> and <b>distance</b> from the relief center.
+    </p>
+
+    <ul>
+      <li><b>Urgency Levels:</b> 1 = High, 2 = Medium, 3 = Low</li>
+      <li><b>Distance:</b> Used as a secondary factor if urgencies are equal.</li>
+    </ul>
+
+    <h2>Sorting Approach</h2>
+    <ol>
+      <li>Collect all disaster areas with urgency and distance.</li>
+      <li>Sort first by urgency (ascending order).</li>
+      <li>If urgency is the same, sort by distance.</li>
+      <li>Deliver supplies in the sorted order.</li>
+    </ol>
+
+    <h2>Example</h2>
+    <table border="1" cellpadding="6">
+      <tr><th>Area</th><th>Urgency</th><th>Distance (km)</th><th>Delivery Order</th></tr>
+      <tr><td>Area B</td><td>High (1)</td><td>6</td><td>1</td></tr>
+      <tr><td>Area A</td><td>Medium (2)</td><td>4</td><td>2</td></tr>
+      <tr><td>Area D</td><td>Medium (2)</td><td>10</td><td>3</td></tr>
+      <tr><td>Area C</td><td>Low (3)</td><td>8</td><td>4</td></tr>
+    </table>
+
+    <p>
+      This ensures critical areas receive relief first while minimizing total travel time.
+    </p>
+  </section>
+
+  <!-- Footer -->
+  <footer>© 2025 VIT DSA Project</footer>
+</body>
+</html>

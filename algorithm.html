@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta charset="UTF-8">
+  <title>Dijkstra’s Algorithm for Disaster Relief</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    /* Small tweaks specific to this page only */
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #e0e0e0; }
+    code, pre { background-color: #f0f4f8; padding: 10px; display: block; overflow-x: auto; border-radius: 6px; }
+    img { max-width: 100%; border-radius: 8px; border: 1px solid #ccc; margin-top: 10px; }
+  </style>
+</head>
+<body>
+<video autoplay muted loop id="bg-video">
+    <source src="assets/videos/algorithm.mp4" type="video/mp4">
+  </video>
+<header>
+  <h1>Dijkstra’s Algorithm for Disaster Relief</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="algorithm.html">Algorithm</a>
+    <a href="simulation.html">Simulation</a>
+    <a href="priority.html">Priority</a>
+    <a href="workflow.html">Workflow</a>
+    <a href="results.html">Results</a>
+    <a href="conclusion.html">Conclusion</a>
+  </nav>
+</header>
+
+<section>
+  <h2>Objective</h2>
+  <p>To find the shortest and fastest delivery routes between disaster-affected zones using Dijkstra’s Algorithm.</p>
+
+  <h2>Algorithm Overview</h2>
+  <p>Dijkstra’s Algorithm is a graph-based shortest path algorithm that identifies the minimum distance from the central relief center to all affected zones, ensuring faster delivery of relief supplies.</p>
+
+  <h2>Algorithm Steps</h2>
+  <ol>
+    <li>Mark all zones as unvisited and assign infinite distance.</li>
+    <li>Set distance of the source zone (relief center) to 0.</li>
+    <li>Choose the unvisited zone with the smallest distance.</li>
+    <li>Update distances of its neighboring zones.</li>
+    <li>Repeat until all zones are visited.</li>
+  </ol>
+
+  <h2>Sample C Implementation</h2>
+  <pre><code>#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+#define V 5
+
+int minDistance(int dist[], int sptSet[]) {
+  int min = INT_MAX, min_index = -1;
+  for (int v = 0; v &lt; V; v++) {
+    if (!sptSet[v] && dist[v] &lt;= min) {
+      min = dist[v];
+      min_index = v;
+    }
+  }
+  return min_index;
+}
+
+void dijkstra(int graph[V][V], int src) {
+  int dist[V], sptSet[V];
+  for (int i = 0; i &lt; V; i++) {
+    dist[i] = INT_MAX;
+    sptSet[i] = 0;
+  }
+  dist[src] = 0;
+
+  for (int count = 0; count &lt; V - 1; count++) {
+    int u = minDistance(dist, sptSet);
+    sptSet[u] = 1;
+    for (int v = 0; v &lt; V; v++) {
+      if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX &&
+          dist[u] + graph[u][v] &lt; dist[v]) {
+        dist[v] = dist[u] + graph[u][v];
+      }
+    }
+  }
+
+  printf("Zone\tShortest Distance from Relief Center\n");
+  for (int i = 0; i &lt; V; i++)
+    printf("%d\t\t%d\n", i, dist[i]);
+}
+
+int main() {
+  int graph[V][V] = {
+    {0, 10, 0, 30, 100},
+    {10, 0, 50, 0, 0},
+    {0, 50, 0, 20, 10},
+    {30, 0, 20, 0, 60},
+    {100, 0, 10, 60, 0}
+  };
+  dijkstra(graph, 0);
+  return 0;
+}</code></pre>
+
+  <h2>Shortest Path Results</h2>
+  <table>
+    <tr><th>Destination Zone</th><th>Shortest Path Cost</th><th>Optimal Path Taken</th></tr>
+    <tr><td>Zone 1</td><td>10</td><td>Zone 0 → Zone 1</td></tr>
+    <tr><td>Zone 2</td><td>50</td><td>Zone 0 → Zone 2</td></tr>
+    <tr><td>Zone 3</td><td>30</td><td>Zone 0 → Zone 3</td></tr>
+    <tr><td>Zone 4</td><td>60</td><td>Zone 0 → Zone 4</td></tr>
+  </table>
+
+  <h2>Graph Diagram</h2>
+  <img src="assets/images/graph.jpg" alt="Dijkstra Graph Diagram" style="max-width:100%; border-radius:8px; border:1px solid #ccc; margin-top:10px;">
+<p style="text-align:center; color:#555;">Figure: Graph showing shortest paths between zones</p>
+
+  <h2>Complexity Analysis</h2>
+  <ul>
+    <li><strong>Time Complexity:</strong> O(V²) for adjacency matrix; O((V + E) log V) using min-heap.</li>
+    <li><strong>Space Complexity:</strong> O(V²) for graph, O(V) for distance and visited arrays.</li>
+  </ul>
+
+  <h2>Limitations</h2>
+  <ul>
+    <li>Cannot handle negative edge weights.</li>
+    <li>Assumes static conditions — does not adapt to real-time changes.</li>
+    <li>Ignores urgency factor unless prioritized separately.</li>
+  </ul>
+</section>
+
+<footer>© 2025 VIT DSA Project | Chetna – Graph & Algorithm Specialist</footer>
+
+<button onclick="window.scrollTo({top: 0, behavior: 'smooth'});"
+        style="position:fixed; bottom:20px; right:20px; padding:10px 15px; background:#0077b6; color:white; border:none; border-radius:5px;">
+  ↑ Top
+</button>
+
+</body>
+</html>

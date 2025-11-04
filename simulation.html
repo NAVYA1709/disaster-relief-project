@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta charset="UTF-8">
+  <title>Disaster Relief Simulation</title>
+<link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f0f0; padding: 20px; }
+    header { text-align: center; margin-bottom: 20px; }
+    input, select, button { padding: 5px; margin: 5px; font-size: 14px; }
+    #form-section, #simulation-section { background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 10px #ccc; margin-bottom: 20px; }
+    #log { max-height: 400px; overflow-y: auto; margin-top: 10px; }
+    .high { color: red; font-weight: bold; }
+    .medium { color: orange; font-weight: bold; }
+    .low { color: green; font-weight: bold; }
+    .route { color: cyan; font-weight: bold; }
+  </style>
+</head>
+<body style="background:LightGray">
+<video autoplay muted loop id="bg-video">
+    <source src="assets/videos/simulationVideo.mp4" type="video/mp4">
+  </video>
+  <header>
+    <h1>Flexible Disaster Relief Allocation Simulation</h1>
+<nav>
+    <a href="index.html">Home</a>
+    <a href="algorithm.html">Algorithm</a>
+    <a href="simulation.html">Simulation</a>
+    <a href="priority.html">Priority</a>
+    <a href="workflow.html">Workflow</a>
+    <a href="results.html">Results</a>
+    <a href="conclusion.html">Conclusion</a>
+  </nav>
+
+  </header>
+
+  <section id="form-section">
+    <h2>Step 1: Setup Disaster Areas</h2>
+    <label>Number of disaster areas: <input type="number" id="numAreas" min="1" max="5" value="4"></label>
+    <button onclick="generateAreaForms()">Set Areas</button>
+    <div id="areaForms"></div>
+    <button id="submitData" style="display:none" onclick="startSimulation()">Start Simulation</button>
+  </section>
+
+  <section id="simulation-section" style="display:none">
+    <h2>Simulation Log</h2>
+    <div id="log"></div>
+  </section>
+
+  <script>
+    const MAXN = 20;
+    const INF = 9999;
+    let n = 0;
+    let nodes = [];
+    let cost = [];
+    let deliveries = [];
+
+    function generateAreaForms(){
+      const num = parseInt(document.getElementById('numAreas').value);
+      if(num<1 || num>=MAXN){ alert("Invalid number of areas."); return; }
+      n = num + 1; // include relief center
+      nodes = Array(n).fill("");
+      deliveries = [];
+
+      let formHTML = `<h3>Enter Names:</h3>`;
+      formHTML += `Relief Center: <input type="text" id="node0" value="Relief Center"><br>`;
+      for(let i=1;i<n;i++){
+        formHTML += `Area ${i}: <input type="text" id="node${i}" value="Area ${String.fromCharCode(64+i)}"><br>`;
+      }
+
+      formHTML += `<h3>Enter Urgency for Each Area:</h3>`;
+      for(let i=1;i<n;i++){
+        formHTML += `<label>${i===0? "Relief Center": "Area "+i} Urgency: 
+        <select id="urgency${i}">
+          <option value="1">High</option>
+          <option value="2" selected>Medium</option>
+          <option value="3">Low</option>
+        </select></label><br>`;
+      }
+
+      document.getElementById('areaForms').innerHTML = formHTML;
+      document.getElementById('submitData').style.display = "inline-block";
+
+      // Pre-fill a sample distance matrix for demo
+      // Adjusted for 5 nodes (1 relief center + 4 areas)
+      cost = [
+        [0, 4, 6, INF, INF],
+        [4, 0, 5, 10, INF],
+        [6, 5, 0, 3, 8],
+        [INF,10, 3, 0, 2],
+        [INF, INF, 8, 2, 0]
+      ];
+    }
+
+    function dijkstra(src){
+      const dist = Array(n).fill(INF);
+      const visited = Array(n).fill(false);
+      const parent = Array(n).fill(-1);
+
+      for(let i=0;i<n;i++){
+        dist[i] = cost[src][i]<INF?cost[src][i]:INF;
+        if(dist[i]<INF) parent[i]=src;
+      }
+      dist[src]=0;
+      visited[src]=true;
+
+      for(let count=1;count<n;count++){
+        let mind=INF,next=-1;
+        for(let i=0;i<n;i++){
+          if(!visited[i] && dist[i]<mind){ mind=dist[i]; next=i; }
+        }
+        if(next===-1) break;
+        visited[next]=true;
+        for(let i=0;i<n;i++){
+          if(!visited[i] && cost[next][i]<INF && dist[next]+cost[next][i]<dist[i]){
+            dist[i] = dist[next]+cost[next][i];
+            parent[i] = next;
+          }
+        }
+      }
+      return {dist,parent};
+    }
+
+    function reconstructPath(src,dest,parent){
+      let path = [];
+      let cur = dest;
+      if(parent[cur]===-1 && cur!==src) return [];
+      while(cur!==-1){
+        path.push(cur);
+        if(cur===src) break;
+        cur=parent[cur];
+      }
+      return path.reverse();
+    }
+
+    function urgencyClass(u){ return u===1?"high":u===2?"medium":"low"; }
+
+    async function startSimulation(){
+      // read names
+      for(let i=0;i<n;i++){
+        nodes[i] = document.getElementById('node'+i).value || `Node ${i}`;
+      }
+
+      // read urgencies
+      deliveries = [];
+      for(let i=1;i<n;i++){
+        const u = parseInt(document.getElementById(`urgency${i}`).value);
+        deliveries.push({area:i,urgency:u,dist:INF});
+      }
+
+      // compute distances
+      const {dist,parent} = dijkstra(0);
+      deliveries.forEach(d=>d.dist=dist[d.area]);
+
+      // sort by urgency then distance
+      deliveries.sort((a,b)=> a.urgency-b.urgency || a.dist-b.dist);
+
+      // show simulation section
+      document.getElementById('form-section').style.display="none";
+      document.getElementById('simulation-section').style.display="block";
+      const log = document.getElementById('log');
+      log.innerHTML = "";
+
+      for(let i=0;i<deliveries.length;i++){
+        const d = deliveries[i];
+        const p = reconstructPath(0,d.area,parent);
+        if(d.dist>=INF){
+          log.innerHTML += `<p class="${urgencyClass(d.urgency)}">❌ Unable to deliver to ${nodes[d.area]}: No route</p>`;
+          continue;
+        }
+
+        log.innerHTML += `<p class="${urgencyClass(d.urgency)}">🚚 Delivering to ${nodes[d.area]} | Urgency: ${d.urgency} | Distance: ${d.dist}</p>`;
+        log.innerHTML += `<p class="route">Route: ${p.map(x=>nodes[x]).join(' → ')}</p>`;
+        await new Promise(r=>setTimeout(r,700));
+
+        for(let j=0;j<p.length;j++){
+          log.innerHTML += `<p>Travelling to ${nodes[p[j]]} ... Reached</p>`;
+          await new Promise(r=>setTimeout(r,700));
+        }
+        log.innerHTML += `<p class="high">✅ Delivery to ${nodes[d.area]} complete</p>`;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      log.innerHTML += "<p>🎉 All allocations processed.</p>";
+    }
+  </script>
+</body>
+</html>

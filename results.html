@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Page Title</title>
+  <link rel="stylesheet" href="style.css"> <!-- or assets/css/style.css -->
+<link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+<body style="background:LightGray">
+<video autoplay muted loop id="bg-video">
+    <source src="assets/videos/results.mp4" type="video/mp4">
+  </video>
+<header>
+  <h1>Simulation Results and Performance Insights</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="algorithm.html">Algorithm</a>
+    <a href="simulation.html">Simulation</a>
+    <a href="priority.html">Priority</a>
+    <a href="workflow.html">Workflow</a>
+    <a href="results.html">Results</a>
+    <a href="conclusion.html">Conclusion</a>
+  </nav>
+</header>
+<section>
+  <h2>Results & Analysis</h2>
+  <p>Simulation results show how the system effectively allocates resources based on urgency and distance. High-urgency areas are served first, followed by closer regions when urgencies are equal.</p>
+
+  <h3>Sample Output Summary:</h3>
+  <ul>
+    <li>Area B (High) — delivered first</li>
+    <li>Area A (Medium) — delivered second</li>
+    <li>Area D (Medium) — delivered third</li>
+    <li>Area C (Low) — delivered last</li>
+  </ul>
+
+  <h3>Graphical Representation</h3>
+  <img src="assets/images/chart.jpg" alt="Results Chart" width="40%">
+  <p>The use of Dijkstra’s algorithm reduced delivery time by optimizing routes, while sorting ensured fairness and urgency balance.</p>
+</section>
+<footer>© 2025 VIT DSA Project</footer>
+</body>
+</html>
