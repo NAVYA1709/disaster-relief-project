@@ -32,6 +32,10 @@ Fast computation using priority queue
 
 Simulates real-world disaster response scenarios
 
+Uses Google Sheets
+
+Google Sheets was used to organize and manage disaster-related data such as locations, connections, distances, and urgency levels. The sheet acts as a structured data source, which is referenced during program execution for input. This improves flexibility and allows easy updates without modifying the source code.
+
 INPUT/OUTPUT
 
 Input
