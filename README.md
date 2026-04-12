@@ -36,6 +36,12 @@ Uses Google Sheets
 
 Google Sheets was used to organize and manage disaster-related data such as locations, connections, distances, and urgency levels. The sheet acts as a structured data source, which is referenced during program execution for input. This improves flexibility and allows easy updates without modifying the source code.
 
+Allocating to Area A | Urgency: 1 | Distance: 5
+
+Route: Relief Center -> Area A
+
+Delivery complete
+
 INPUT/OUTPUT
 
 Input
