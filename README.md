@@ -1,100 +1,50 @@
-# disaster-relief-project
-An efficient disaster relief resource allocation system to identify the quickest delivery routes and priority queues to ensure that high-urgency  areas receive supplies first. The system seeks to optimize resource distribution during  emergencies like floods and earthquakes, thereby reducing response time and maximizing relief  effectiveness.
+# Disaster Relief Resource Allocation System 🚑📦
 
-How to run
-1. Compile the code
+An efficient, console-based disaster relief resource allocation system designed to identify the quickest supply delivery routes and manage priority queues, ensuring high-urgency zones receive life-saving resources first. 
+
+By optimizing distribution routes during emergencies like floods and earthquakes, this system drastically reduces emergency response times and maximizes relief effectiveness.
+
+---
+
+## 🚀 Features
+
+* **Shortest Path Optimization:** Employs Dijkstra's Algorithm to find the absolute fastest path between multiple relief centers and affected locations.
+* **Dynamic Priority Queuing:** Processes high-urgency regions and nearest nodes first using an optimized Min-Heap structure.
+* **Decoupled Data Architecture:** Leverages **Google Sheets** to organize, update, and manage locations, road connections, distances, and urgency levels seamlessly without code modifications.
+* **Real-World Simulation:** Dynamically updates routes and simulates a live disaster distribution sequence upon execution.
+* **Highly Scalable:** Handles complex, weighted terrain graphs efficiently via adjacency lists.
+
+---
+
+## 🛠️ Tech Stack & Core Logic
+
+* **Language:** C++ 
+* **Data Structures:** Graphs (Adjacency Lists), Priority Queue (Min-Heap)
+* **Algorithms:** Dijkstra's Shortest Path Algorithm
+* **Data Source:** Google Sheets (CSV/Structured format for input routing matrices)
+
+---
+
+## ⚙️ How It Works
+
+1.  **Graph Construction:** The system reads location connections and road weights from the data source to construct an adjacency list.
+2.  **Hub Isolation:** A source node (Relief Center) is designated.
+3.  **Priority Evaluation:** The Min-Heap priority queue dynamically processes the closest nodes first while cross-checking location urgency metrics.
+4.  **Route Relaxation:** Distances are dynamically calculated and updated across the map grid.
+5.  **Output Deployment:** The final optimized paths, delivery sequence, and completion trackers are printed out for the log.
+
+
+---
+
+## 💻 Installation & Running the System
+
+### Prerequisites
+Make sure you have a modern compiler installed ($G++$ for C++ or $JDK$ for Java).
+
+### Execution Instructions (C++)
+```bash
+# 1. Compile the source code
 g++ main.cpp -o output
-2. Run the program
+
+# 2. Run the executable program
 ./output
-
-(For Java, replace with javac and java commands)
-
-Project Overview
-
-A console-based system that simulates disaster relief management using graph algorithms.
-It calculates the shortest and most efficient routes between locations to ensure fast delivery of resources during emergencies.
-
-CORE LOGIC
-
-Graph representation of locations,
-Priority Queue (Min Heap) for optimization,
-Dijkstra’s Algorithm for shortest path calculation
-
-FEATURES
-
-Finds shortest path between multiple locations
-
-Optimizes resource distribution routes
-
-Handles weighted graphs efficiently
-
-Fast computation using priority queue
-
-Simulates real-world disaster response scenarios
-
-Uses Google Sheets
-
-Google Sheets was used to organize and manage disaster-related data such as locations, connections, distances, and urgency levels. The sheet acts as a structured data source, which is referenced during program execution for input. This improves flexibility and allows easy updates without modifying the source code.
-
-Allocating to Area A | Urgency: 1 | Distance: 5
-
-Route: Relief Center -> Area A
-
-Delivery complete
-
-INPUT/OUTPUT
-
-Input
-
-Number of nodes (locations)
-
-Edges with distances (roads)
-
-Source node
-
-Output
-
-Shortest distance from source:
-
-Node 1 → 0
-
-Node 2 → 4
-
-Node 3 → 7
-
-Node 4 → 9
-
-File Overview
-
-main.cpp        — Core implementation (Dijkstra + Priority Queue)
-
-(Adjust if you have multiple files)
-
-HOW IT WORKS
-
-Graph is created using adjacency list
-
-Source node is selected
-
-Priority queue processes nearest node first
-
-Distances are updated dynamically
-
-Final shortest paths are printed
-
-Future Improvements
-
-Integrate Google Maps API for real-world routing
-
-Add GUI (web or app interface)
-
-Store data using database (Firebase)
-
-Real-time disaster tracking
-
-Tech Stack
-
-Language: C++ / Java
-
-Data Structures: Graphs, Priority Queue
-Algorithm: Dijkstra
